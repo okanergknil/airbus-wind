@@ -14,42 +14,42 @@
 
     <style>
         :root {
-            var-airbus-blue: #00205B;      
-            var-airbus-light: #0055A5;     
-            var-bg-page: #F4F7F9;          
-            var-card-bg: #FFFFFF;          
-            var-text-dark: #2C3E50;        
-            var-border-color: #D1D9E6;     
-            var-success-green: #2E7D32;
-            var-warning-red: #D32F2F;
+            --airbus-blue: #00205B;      
+            --airbus-light: #0055A5;     
+            --bg-page: #F4F7F9;          
+            --card-bg: #FFFFFF;          
+            --text-dark: #2C3E50;        
+            --border-color: #D1D9E6;     
+            --success-green: #2E7D32;
+            --warning-red: #D32F2F;
         }
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #F4F7F9;
-            color: #2C3E50;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 15px; /* Mobilde kenar boşluğunu biraz kıstık */
+            padding: 15px; 
         }
 
         .calculator-card {
-            background: #FFFFFF;
+            background: var(--card-bg);
             padding: 25px 20px;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 32, 91, 0.08); 
             width: 100%;
             max-width: 480px;
             box-sizing: border-box;
-            border-top: 6px solid #00205B;
+            border-top: 6px solid var(--airbus-blue);
         }
 
         h2 {
             text-align: center;
-            color: #00205B;
+            color: var(--airbus-blue);
             margin-top: 0;
             margin-bottom: 25px;
             font-weight: 800;
@@ -59,10 +59,10 @@
         .section-title {
             font-size: 13px;
             font-weight: 700;
-            color: #00205B;
+            color: var(--airbus-blue);
             margin-top: 15px;
             margin-bottom: 10px;
-            border-bottom: 2px solid #D1D9E6;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 5px;
         }
 
@@ -86,17 +86,18 @@
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #D1D9E6;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             box-sizing: border-box;
-            font-size: 16px; /* Mobilde zoom yapmaması için en az 16px olmalı */
+            font-size: 16px; 
             background-color: #F8FAFC;
-            color: #2C3E50;
+            color: var(--text-dark);
+            transition: background-color 0.3s;
         }
 
         button {
             width: 100%;
-            background-color: #00205B;
+            background-color: var(--airbus-blue);
             color: white;
             border: none;
             padding: 14px;
@@ -110,20 +111,20 @@
         .btn-metar {
             margin-top: 22px; 
             background-color: #E2E8F0;
-            color: #00205B;
-            border: 1px solid #D1D9E6;
+            color: var(--airbus-blue);
+            border: 1px solid var(--border-color);
         }
 
         .metar-display {
             background-color: #F1F5F9;
-            color: #2C3E50;
+            color: var(--text-dark);
             font-family: monospace;
             padding: 12px;
             border-radius: 6px;
             font-size: 12px;
             margin-bottom: 15px;
             word-wrap: break-word;
-            border: 1px solid #D1D9E6;
+            border: 1px solid var(--border-color);
         }
 
         .result-box {
@@ -132,7 +133,7 @@
         }
 
         .comp-card {
-            border: 1px solid #D1D9E6;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
@@ -151,7 +152,7 @@
         .comp-value {
             font-size: 18px;
             font-weight: 800;
-            color: #00205B;
+            color: var(--airbus-blue);
         }
 
         .warning-badge {
@@ -161,10 +162,10 @@
             border-radius: 12px;
         }
 
-        .badge-ok { background-color: #E8F5E9; color: #2E7D32; }
-        .badge-fail { background-color: #FFEBEE; color: #D32F2F; }
-        .card-fail { border-color: #D32F2F; background-color: #FFF5F5; }
-        .card-fail .comp-value { color: #D32F2F; }
+        .badge-ok { background-color: #E8F5E9; color: var(--success-green); }
+        .badge-fail { background-color: #FFEBEE; color: var(--warning-red); }
+        .card-fail { border-color: var(--warning-red); background-color: #FFF5F5; }
+        .card-fail .comp-value { color: var(--warning-red); }
 
         .banner {
             padding: 12px;
@@ -175,8 +176,8 @@
             margin-top: 15px;
             color: white;
         }
-        .banner-ok { background-color: #00205B; }
-        .banner-fail { background-color: #D32F2F; }
+        .banner-ok { background-color: var(--airbus-blue); }
+        .banner-fail { background-color: var(--warning-red); }
     </style>
 </head>
 <body>
@@ -184,8 +185,8 @@
     <div class="calculator-card">
         <h2>Airbus Wind Calc</h2>
         
-        <div class="section-title">AIRCRAFT</div>
-        <select id="aircraftModel" style="margin-bottom: 15px;">
+        <div class="section-title">AIRCRAFT & RUNWAY</div>
+        <select id="aircraftModel" style="margin-bottom: 10px;">
             <optgroup label="A320neo Family">
                 <option value="A320neo_LEAP">A320neo (LEAP-1A)</option>
                 <option value="A320neo_PW">A320neo (PW1100G)</option>
@@ -201,6 +202,12 @@
             <optgroup label="Widebody">
                 <option value="A330">A330</option>
             </optgroup>
+        </select>
+
+        <select id="runwayCondition" style="margin-bottom: 15px;">
+            <option value="dry">Runway: DRY (Normal Limits)</option>
+            <option value="wet">Runway: WET (Auto-detected)</option>
+            <option value="contaminated">Runway: CONTAMINATED (Auto-detected)</option>
         </select>
 
         <div class="section-title">WEATHER</div>
@@ -231,8 +238,7 @@
             </div>
         </div>
 
-        <div class="section-title">RUNWAY</div>
-        <label>HEADING (°)</label>
+        <div class="section-title">RUNWAY HEADING</div>
         <input type="number" id="rwy" placeholder="352" style="margin-bottom: 20px;">
 
         <button onclick="calculateWind()">CALCULATE</button>
@@ -259,11 +265,10 @@
     </div>
 
     <script>
-        // PWA Service Worker Kaydı
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('PWA Ready!', reg))
+                navigator.serviceWorker.register('./sw.js?v=3')
+                .then(reg => console.log('PWA Ready v3!', reg))
                 .catch(err => console.log('PWA Error:', err));
             });
         }
@@ -292,6 +297,31 @@
                     document.getElementById('rawMetar').innerText = "No METAR found."; return;
                 }
                 document.getElementById('rawMetar').innerText = metarText;
+
+                // --- OTOMATİK PİST DURUMU BELİRLEME (YENİ) ---
+                let rwyCondition = 'dry'; 
+                // Kar, Dolu, Buz, Donan Yağmur
+                const contaminatedRegex = /(?:\s|^)([-+]?(?:SH)?(?:SN|SG|PL|GR|GS)|[-+]?FZ(?:RA|DZ|FG))(?:\s|$)/;
+                // Yağmur, Çiseleme
+                const wetRegex = /(?:\s|^)([-+]?(?:SH|TS)?(?:RA|DZ))(?:\s|$)/;
+
+                if (contaminatedRegex.test(metarText)) {
+                    rwyCondition = 'contaminated';
+                } else if (wetRegex.test(metarText)) {
+                    rwyCondition = 'wet';
+                }
+
+                let conditionSelect = document.getElementById('runwayCondition');
+                conditionSelect.value = rwyCondition;
+                
+                // Kullanıcının otomatik değişimi fark etmesi için kısa süreli yeşil parlama efekti
+                if(rwyCondition !== 'dry') {
+                    conditionSelect.style.backgroundColor = "#E8F5E9"; // Açık yeşil
+                    setTimeout(() => conditionSelect.style.backgroundColor = "#F8FAFC", 2500);
+                }
+                // ----------------------------------------------
+
+                // Rüzgar Ayrıştırma
                 let match = metarText.match(/(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?KT/);
                 if(match) {
                     if(match[1] === "VRB") {
@@ -310,6 +340,7 @@
             let windSpd = parseFloat(document.getElementById('windSpd').value);
             let windGust = parseFloat(document.getElementById('windGust').value);
             let modelKey = document.getElementById('aircraftModel').value;
+            let condition = document.getElementById('runwayCondition').value; 
 
             if(isNaN(rwy) || isNaN(windDir) || isNaN(windSpd)) { alert("Fill required fields."); return; }
 
@@ -317,36 +348,63 @@
             let rad = (windDir - rwy) * (Math.PI / 180);
             let crosswind = Math.abs(maxSpeed * Math.sin(rad));
             let headwind = maxSpeed * Math.cos(rad);
-            let limits = aircraftLimits[modelKey];
-            let allPassed = true;
+            
+            let baseLimits = aircraftLimits[modelKey];
+            let currentCrosswindLimit = baseLimits.crosswind;
+            let currentTailwindLimit = baseLimits.tailwind;
 
+            if (condition === "wet") {
+                currentCrosswindLimit = Math.min(29, baseLimits.crosswind); 
+            } else if (condition === "contaminated") {
+                currentCrosswindLimit = Math.min(15, baseLimits.crosswind); 
+                currentTailwindLimit = 0; 
+            }
+
+            let allPassed = true;
             document.getElementById('resultBox').style.display = 'block';
 
             let xwCard = document.getElementById('crosswindCard');
             let xwBadge = document.getElementById('crosswindBadge');
             document.getElementById('crosswindVal').innerText = `${crosswind.toFixed(1)} KT`;
             
-            if (crosswind > limits.crosswind) {
-                xwCard.className = "comp-card card-fail"; xwBadge.className = "warning-badge badge-fail";
-                xwBadge.innerText = `MAX ${limits.crosswind}`; allPassed = false;
-            } else { xwCard.className = "comp-card"; xwBadge.className = "warning-badge badge-ok"; xwBadge.innerText = "OK"; }
+            if (crosswind > currentCrosswindLimit) {
+                xwCard.className = "comp-card card-fail"; 
+                xwBadge.className = "warning-badge badge-fail";
+                xwBadge.innerText = `MAX ${currentCrosswindLimit}`; 
+                allPassed = false;
+            } else { 
+                xwCard.className = "comp-card"; 
+                xwBadge.className = "warning-badge badge-ok"; 
+                xwBadge.innerText = `OK (MAX ${currentCrosswindLimit})`; 
+            }
             
-            let isTailwind = headwind < 0; let hwTwVal = Math.abs(headwind);
-            let htCard = document.getElementById('headTailCard'); let htBadge = document.getElementById('headTailBadge');
+            let isTailwind = headwind < 0; 
+            let hwTwVal = Math.abs(headwind);
+            let htCard = document.getElementById('headTailCard'); 
+            let htBadge = document.getElementById('headTailBadge');
+            
             document.getElementById('headTailTitle').innerText = isTailwind ? "Tailwind" : "Headwind";
             document.getElementById('headTailVal').innerText = `${hwTwVal.toFixed(1)} KT`;
             
-            if (isTailwind && hwTwVal > limits.tailwind) {
-                htCard.className = "comp-card card-fail"; htBadge.className = "warning-badge badge-fail";
-                htBadge.innerText = `MAX ${limits.tailwind}`; allPassed = false;
-            } else { htCard.className = "comp-card"; htBadge.className = "warning-badge badge-ok"; htBadge.innerText = "OK"; }
+            if (isTailwind && hwTwVal > currentTailwindLimit) {
+                htCard.className = "comp-card card-fail"; 
+                htBadge.className = "warning-badge badge-fail";
+                htBadge.innerText = `MAX ${currentTailwindLimit}`; 
+                allPassed = false;
+            } else { 
+                htCard.className = "comp-card"; 
+                htBadge.className = "warning-badge badge-ok"; 
+                htBadge.innerText = isTailwind ? `OK (MAX ${currentTailwindLimit})` : "OK"; 
+            }
 
             let banner = document.getElementById('statusBanner');
             banner.style.display = 'block';
             if(allPassed) {
-                banner.className = "banner banner-ok"; banner.innerText = "✔ LANDING LIMITS OK";
+                banner.className = "banner banner-ok"; 
+                banner.innerText = "✔ LANDING LIMITS OK";
             } else {
-                banner.className = "banner banner-fail"; banner.innerText = "⚠ LIMITS EXCEEDED";
+                banner.className = "banner banner-fail"; 
+                banner.innerText = "⚠ LIMITS EXCEEDED";
             }
         }
     </script>
