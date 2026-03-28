@@ -92,6 +92,7 @@
             font-size: 16px; 
             background-color: #F8FAFC;
             color: var(--text-dark);
+            transition: background-color 0.3s;
         }
 
         button {
@@ -205,8 +206,8 @@
 
         <select id="runwayCondition" style="margin-bottom: 15px;">
             <option value="dry">Runway: DRY (Normal Limits)</option>
-            <option value="wet">Runway: WET (Good/Medium)</option>
-            <option value="contaminated">Runway: CONTAMINATED / SNOW</option>
+            <option value="wet">Runway: WET (Auto-detected)</option>
+            <option value="contaminated">Runway: CONTAMINATED (Auto-detected)</option>
         </select>
 
         <div class="section-title">WEATHER</div>
@@ -266,8 +267,8 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=2')
-                .then(reg => console.log('PWA Ready v2!', reg))
+                navigator.serviceWorker.register('./sw.js?v=4')
+                .then(reg => console.log('PWA Ready v4!', reg))
                 .catch(err => console.log('PWA Error:', err));
             });
         }
@@ -296,6 +297,35 @@
                     document.getElementById('rawMetar').innerText = "No METAR found."; return;
                 }
                 document.getElementById('rawMetar').innerText = metarText;
+
+                // --- GELİŞMİŞ PİST DURUMU BELİRLEME ---
+                let rwyCondition = 'dry'; 
+                let metarWords = metarText.split(' ');
+
+                // METAR kelimelerini tek tek tara
+                for (let word of metarWords) {
+                    // Kontamine: Kar (SN), Buz Peletleri (PL), Dolu (GR/GS), Donan Yağmur/Sis (FZ)
+                    if (word.includes('SN') || word.includes('PL') || word.includes('GR') || word.includes('GS') || word.includes('FZ')) {
+                        rwyCondition = 'contaminated';
+                        break; // En kötüsünü bulduk, aramayı bırak.
+                    }
+                    // Islak: Yağmur (RA), Çiseleme (DZ)
+                    else if (word.includes('RA') || word.includes('DZ')) {
+                        rwyCondition = 'wet';
+                    }
+                }
+
+                let conditionSelect = document.getElementById('runwayCondition');
+                conditionSelect.value = rwyCondition;
+                
+                // Kullanıcıya değiştiğini göstermek için yeşil efekt
+                if(rwyCondition !== 'dry') {
+                    conditionSelect.style.backgroundColor = "#E8F5E9"; 
+                    setTimeout(() => conditionSelect.style.backgroundColor = "#F8FAFC", 2000);
+                }
+                // ----------------------------------------------
+
+                // Rüzgar Ayrıştırma
                 let match = metarText.match(/(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?KT/);
                 if(match) {
                     if(match[1] === "VRB") {
