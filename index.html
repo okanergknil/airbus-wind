@@ -92,7 +92,6 @@
             font-size: 16px; 
             background-color: #F8FAFC;
             color: var(--text-dark);
-            transition: background-color 0.3s;
         }
 
         button {
@@ -206,8 +205,8 @@
 
         <select id="runwayCondition" style="margin-bottom: 15px;">
             <option value="dry">Runway: DRY (Normal Limits)</option>
-            <option value="wet">Runway: WET (Auto-detected)</option>
-            <option value="contaminated">Runway: CONTAMINATED (Auto-detected)</option>
+            <option value="wet">Runway: WET (Good/Medium)</option>
+            <option value="contaminated">Runway: CONTAMINATED / SNOW</option>
         </select>
 
         <div class="section-title">WEATHER</div>
@@ -267,8 +266,8 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=3')
-                .then(reg => console.log('PWA Ready v3!', reg))
+                navigator.serviceWorker.register('./sw.js?v=2')
+                .then(reg => console.log('PWA Ready v2!', reg))
                 .catch(err => console.log('PWA Error:', err));
             });
         }
@@ -297,31 +296,6 @@
                     document.getElementById('rawMetar').innerText = "No METAR found."; return;
                 }
                 document.getElementById('rawMetar').innerText = metarText;
-
-                // --- OTOMATİK PİST DURUMU BELİRLEME (YENİ) ---
-                let rwyCondition = 'dry'; 
-                // Kar, Dolu, Buz, Donan Yağmur
-                const contaminatedRegex = /(?:\s|^)([-+]?(?:SH)?(?:SN|SG|PL|GR|GS)|[-+]?FZ(?:RA|DZ|FG))(?:\s|$)/;
-                // Yağmur, Çiseleme
-                const wetRegex = /(?:\s|^)([-+]?(?:SH|TS)?(?:RA|DZ))(?:\s|$)/;
-
-                if (contaminatedRegex.test(metarText)) {
-                    rwyCondition = 'contaminated';
-                } else if (wetRegex.test(metarText)) {
-                    rwyCondition = 'wet';
-                }
-
-                let conditionSelect = document.getElementById('runwayCondition');
-                conditionSelect.value = rwyCondition;
-                
-                // Kullanıcının otomatik değişimi fark etmesi için kısa süreli yeşil parlama efekti
-                if(rwyCondition !== 'dry') {
-                    conditionSelect.style.backgroundColor = "#E8F5E9"; // Açık yeşil
-                    setTimeout(() => conditionSelect.style.backgroundColor = "#F8FAFC", 2500);
-                }
-                // ----------------------------------------------
-
-                // Rüzgar Ayrıştırma
                 let match = metarText.match(/(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?KT/);
                 if(match) {
                     if(match[1] === "VRB") {
